@@ -49,6 +49,12 @@ However, the \r character may then end up in the next line you read out.'''
 print("Using read(), Position= ",ser.read(8))
 print("The next line is: ",ser.readline())
 
+'''You can use readline(), and then only print all but the last character'''
+message = [0x52, 0x50, 0x41, 0x20] #RPA
+ser.write(message)
+line = ser.readline()
+print(line[0:len(line)-1])
+
 '''Close the serial port-- if port is not closed, 
 you may run into a permission error in Python the next time you run your program'''
 ser.close() 
