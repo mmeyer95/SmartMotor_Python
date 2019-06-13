@@ -32,28 +32,32 @@ else:
     print("No response received.")
     
 '''Other commands can be sent over the serial port, such as motion commands'''
-message = [0x50, 0x72, 0x54, 0x3D, 0x31, 0x30, 0x30, 0x30, 0x20] #PT=0 \n
+message = [0x50, 0x72, 0x54, 0x3D, 0x31, 0x30, 0x30, 0x30, 0x20] #PRT=1000\r
 ser.write(message)
 message = [0x47, 0x20] #G \n
 ser.write(message)
+
 
 '''Alternatively, ASCII commands can be sent, and Python takes care of converting to bytes
 with (b'string') '''
 print("Waiting for move...")
 time.sleep(10) #wait for move to finish
 ser.flush() #clear the serial terminal
-ser.write(b'RPA ') #RPA
+ser.write(b'RPA ') #RPA- include a space after motor command
+
+
 '''Alternatively to reading lines, you can read back a certain # of bytes from the port.
 You will notice the carriage return is no longer reported back with this command.
 However, the \r character may then end up in the next line you read out.'''
 print("Using read(), Position= ",ser.read(8))
 print("The next line is: ",ser.readline())
 
+
 '''You can use readline(), and then only print all but the last character'''
-message = [0x52, 0x50, 0x41, 0x20] #RPA
-ser.write(message)
+ser.write(b'RPA\r') #RPA - can use carriage return in place of space
 line = ser.readline()
 print(line[0:len(line)-1])
+
 
 '''Close the serial port-- if port is not closed, 
 you may run into a permission error in Python the next time you run your program'''
